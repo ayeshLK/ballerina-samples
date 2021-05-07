@@ -99,6 +99,85 @@ type Student record {|
     int age;
 |};
 
+// table could have joins
+type User record {|
+    readonly int id;
+    string name;
+|};
+
+type Login record {|
+    int userId;
+    string time;
+|};
+
+// ----------------------------------------------------------- //
+// ----------------------------------------------------------- //
+
+// `stream` represents a sequence of values that are generated as needed
+// `stream` ends with either `()` or `error`
+
+type LS stream<string,io:Error?>;
+
+// strip blank values
+function strip(LS lines) returns LS {
+    return 
+        stream from var line in lines
+        where line.trim().length() > 0
+        select line;    
+}
+
+// function count(LS lines) returns int|io:Error {
+//     int nLines = 0;
+//     check from var line in lines
+//     do {
+//         nLines += 1;
+//     }  
+//     return nLines;
+// }
+
+// ----------------------------------------------------------- //
+// ----------------------------------------------------------- //
+
+// ballerina has first class support for XML
+// xml is considered as sequences
+
+string url = "http://sample.ballerina.com/home";
+xml content = xml`<a href="${url}">Ballerina</a> is an <em>exciting</em> new language!`;
+xml p = xml`<p>${content}</p>`;
+
+xml x1 = xml`<p id="greeting">Hello World!</p>`;
+string paraId = check x1.id;
+
+xml:Element elem = xml`<p>Hello</p>`;
+
+function stringToXml(string text) returns xml:Text {
+    return xml:createText(text);
+}
+
+function rename(xml x, string oldName, string newName) {
+    foreach xml:Element e in x.elements() {
+        if (e.getName() == oldName) {
+            e.setName(newName);
+        }
+        rename(e.getChildren(), oldName, newName);
+    }
+}
+
+type Subject record {|
+    string name;
+    int credits;
+|};
+
+function subjectToXml(Subject[] subjects) returns xml {
+    return xml`<data>${
+        from var {name, credits} in subjects
+        select xml`<subject name="${name}" credits="${credits}">${name}</subject>`
+    }</data>`;
+}
+
+// ----------------------------------------------------------- //
+// ----------------------------------------------------------- //
+
 public function main() {
     table<Fruit> key (id) fruits = table [
         { id: 1, name: "apple", nutritions: ["calcium"] },
@@ -145,6 +224,19 @@ public function main() {
         io:println("Error occurred while filtering over-aged students ", overAgeStudents.message());
     }
 
+    // tables could use `join` expressions
+    table<User> key(id) users = table [
+        { id: 1, name: "Ayesh Almeida" },
+        { id: 2, name: "Shelani De Silva" }
+    ];
+    Login[] logins = [
+        { userId: 1, time: "2021-05-07 15:00 +0530 UTC"}
+    ];
+    string[] loginDetail = 
+                from var login in logins
+                join var user in users
+                    on login.userId equals user.id
+                select string`${user.name} -> ${login.time}`; 
 }
 
 
