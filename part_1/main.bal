@@ -116,12 +116,39 @@ function getDayOfWeek(int day) returns string {
     }
 }
 
+function isEven(int a) returns boolean {
+    match (a % 2) {
+        0 => {
+            return true;
+        }
+        _ => {
+            return false;
+        }
+    }
+}
+
 // functions are first class citizens
 var isOdd = function (int i) returns boolean => i % 2 != 0;
 // following defines `IntFilter` function type
 type IntFilter function (int) returns boolean;
 // creates a instance of `IntFilter` type
 IntFilter evenFilter = function (int i) returns boolean => i % 2 == 0;
+
+function apply(int a, int b, function (int, int) returns int fun) returns int {
+    return fun(a, b);
+}
+
+function getIntFilter() returns function (int) returns boolean {
+    return function (int i) returns boolean => i % 2 == 0;
+}
+
+function findMax(int a, int b) returns int {
+    if (a > b) {
+    	return a;
+    } else {
+    	return b;
+    }
+}
 
 function GCD(int a, int b) returns int {
     int aVal = a;
