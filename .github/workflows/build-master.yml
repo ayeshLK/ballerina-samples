@@ -1,0 +1,24 @@
+name: Ballerina Samples `master` Build
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Build on Ubuntu
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        directory: ["part_1", "part_2", "part_3", "ballerina_introduction", "ballerina_collections", "ballerina-behavioural-types"]
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Ballerina Build
+        uses: ballerina-platform/ballerina-action@master
+        env:
+          WORKING_DIR: ${{ matrix.directory }}
+        with:
+          args:
+            build

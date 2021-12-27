@@ -116,7 +116,7 @@ type Login record {|
 // `stream` represents a sequence of values that are generated as needed
 // `stream` ends with either `()` or `error`
 
-type LS stream<string,io:Error?>;
+type LS stream<string,error?>;
 
 // strip blank values
 function strip(LS lines) returns LS {
@@ -226,8 +226,8 @@ public function main() {
 
     // tables could use `join` expressions
     table<User> key(id) users = table [
-        { id: 1, name: "Ayesh Almeida" },
-        { id: 2, name: "Shelani De Silva" }
+        { id: 1, name: "John Doe" },
+        { id: 2, name: "Jim Doe" }
     ];
     Login[] logins = [
         { userId: 1, time: "2021-05-07 15:00 +0530 UTC"}
