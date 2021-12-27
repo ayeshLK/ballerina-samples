@@ -8,20 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/chekout@v2
-      - name: Ballerina Build
-        uses: ballerina-platform/ballerina-action@master
-        env:
-          WORKING_DIR: '*/'
-        with:
-          args:
-            build
-  
-  windows-build:
-    name: Build on Windows
-    runs-on: windows-latest
-    steps:
-      - name: Checkout Repository
         uses: actions/checkout@v2
       - name: Ballerina Build
         uses: ballerina-platform/ballerina-action@master

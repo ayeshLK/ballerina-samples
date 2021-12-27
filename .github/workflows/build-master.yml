@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/chekout@v2
+        uses: actions/checkout@v2
       - name: Ballerina Build
         uses: ballerina-platform/ballerina-action@master
         env:
