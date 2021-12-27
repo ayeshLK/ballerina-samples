@@ -242,13 +242,13 @@ public function main() returns error? {
     // waiting for async calls could be done in two ways
     // 1. wait for individual calls
     //
-    // int gcd1 = check wait gdc1F;
-    // int gcd2 = check wait gdc2F;
+    // int gcd1 = check wait f1;
+    // int gcd2 = check wait f2;
 
     // 2. wait for both
-    record {int x1;  int x2;} gcdCalc = wait { x1: f1, x2: f2 };
-    int gcd1 = gcdCalc.x1;
-    int gcd2 = gcdCalc.x2;
+    record {int|error x1;  int|error x2;} gcdCalc = wait { x1: f1, x2: f2 };
+    int gcd1 = check gcdCalc.x1;
+    int gcd2 = check gcdCalc.x2;
     io:println(string`GCD Calcl [137, 21] = ${gcd1}`);
     io:println(string`GCD Calcl [4736, 82] = ${gcd2}`);
 }
