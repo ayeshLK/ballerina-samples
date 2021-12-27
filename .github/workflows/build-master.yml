@@ -1,0 +1,21 @@
+name: Ballerina Samples `master` Build
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Build on Ubuntu
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/chekout@v2
+      - name: Ballerina Build
+        uses: ballerina-platform/ballerina-action@master
+        env:
+          WORKING_DIR: './**/'
+        with:
+          args:
+            build
