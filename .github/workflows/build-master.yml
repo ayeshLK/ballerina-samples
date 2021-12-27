@@ -1,4 +1,4 @@
-name: Ballerina Samples `master` Build
+name: Build
 
 on:
   push:
