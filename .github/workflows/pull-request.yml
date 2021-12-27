@@ -6,13 +6,16 @@ jobs:
   ubuntu-build:
     name: Build on Ubuntu
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        directory: ["part1", "part2", "part3", "ballerina_introduction", "ballerina_collections", "ballerina-behavioural-types"]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
       - name: Ballerina Build
         uses: ballerina-platform/ballerina-action@master
         env:
-          WORKING_DIR: '*/'
+          WORKING_DIR: ${{ matrix.directory }}
         with:
           args:
             build
