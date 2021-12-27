@@ -32,4 +32,4 @@ target/
 Ballerina.lock
 
 # Dependencies.toml of examples and load-tests
-./**/Dependencies.toml
+./*/Dependencies.toml
