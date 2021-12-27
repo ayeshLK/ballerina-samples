@@ -12,7 +12,7 @@ jobs:
       - name: Ballerina Build
         uses: ballerina-platform/ballerina-action@master
         env:
-          WORKING_DIR: './**/'
+          WORKING_DIR: '*/'
         with:
           args:
             build
@@ -26,7 +26,7 @@ jobs:
       - name: Ballerina Build
         uses: ballerina-platform/ballerina-action@master
         env:
-          WORKING_DIR: './**/'
+          WORKING_DIR: '*/'
         with:
           args:
             build
