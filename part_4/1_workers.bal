@@ -11,6 +11,34 @@ import ballerina/io;
 // Annotation can be used to make a strand run on a seperate thread (physical thread)
 //---------------------------------//
 
+// normally all of function's code belongs to the function's `default worker`
+// function can declare name workers which run concurrently function's default worker and other named workers
+function simpleWorkers() {
+    // function level variables are available for access inside the wokers as well
+    int counter = 0;
+    io:println(string`Initializing Counter[${counter}]`);
+
+    // named workers can continue to execute after the function's default worker terminates 
+    // and the function returns 
+    worker A {
+        io:println("In Worker A");
+        counter+=1;
+    }
+
+    worker B {
+        io:println("In Worker B");
+        counter+=1;
+    }
+
+    // If we need to wait until a worker is completed we have to explicitly wait for it
+    wait A;
+    wait B;
+
+    io:println(string`In Function Worker, Counter[${counter}]`);
+
+    // inter-worker messaging demo
+    io:println("Value received from worker-messaging ", messaging());
+}
 
 function workerReturnValue(string s) returns int|error {
     // workers can return values
@@ -114,33 +142,4 @@ function messagingFailure(string s) returns int|error {
     }
     int resolvedValue = check <- A;
     return resolvedValue;
-}
-
-// normally all of function's code belongs to the function's `default worker`
-// function can declare name workers which run concurrently function's default worker and other named workers
-public function main() {
-    // function level variables are available for access inside the wokers as well
-    int counter = 0;
-    io:println(string`Initializing Counter[${counter}]`);
-
-    // named workers can continue to execute after the function's default worker terminates 
-    // and the function returns 
-    worker A {
-        io:println("In Worker A");
-        counter+=1;
-    }
-
-    worker B {
-        io:println("In Worker B");
-        counter+=1;
-    }
-
-    // If we need to wait until a worker is completed we have to explicitly wait for it
-    wait A;
-    wait B;
-
-    io:println(string`In Function Worker, Counter[${counter}]`);
-
-    // inter-worker messaging demo
-    io:println("Value received from worker-messaging ", messaging());
 }
