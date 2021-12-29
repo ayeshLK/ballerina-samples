@@ -89,3 +89,30 @@ function foo() {
 
 // can only be called from within a transactional context
 transactional function bar() {}
+
+// ballerina can implement distributed transactions
+// meaning remote methods of client objects and resource methods of service objects could be transactional
+// and also client-objects and listener objects can be transaction aware
+ 
+// workers can be transaction aware
+transactional function execWithWorkers() {
+    transactional worker A {
+        bar();
+    }
+}
+
+// often code needs to get executed depending on whether a transaction committed
+transactional function updateInfo() returns error? {
+    check updateDb();
+    // can provide a commit handler to execute code after this transaction is commited successfully
+    // if multiple handlers registerd they would get executed in order/reverse
+    transaction:onCommit(commitHandler);
+    // as above we could register a handler to get executed if the transaction is rollback
+    // ```transaction:onRollback(rollbackHandler);``` 
+}
+
+function updateDb() returns error? {}
+
+isolated function commitHandler(transaction:Info info) {
+    io:println("Receid commit info ", info);
+}
