@@ -80,6 +80,42 @@ function startInt(IntFunc fun) returns future<int> {
     return functionWorker;
 }
 
+// workers can send/receive messages to/from workers
+// this is validate at compile-time
+function messaging() returns int {
+    worker A {
+        // send `1` to worker `B`
+        1 -> B;
+        2 -> C;
+    }
+
+    worker B {
+        // receive int from worker `A`
+        int recA = <- A;
+        // send int to `function` worker
+        recA -> function;
+    }
+
+    worker C {
+        int recA = <- A;
+        recA -> function;
+    }
+
+    // receive int sent by worker `B` to the `function` worker
+    int recB = <- B;
+    int recC = <- C;
+    return recB + recC;
+}
+
+function messagingFailure(string s) returns int|error {
+    worker A returns error? {
+        int value = check int:fromString(s);
+        value -> function;
+    }
+    int resolvedValue = check <- A;
+    return resolvedValue;
+}
+
 // normally all of function's code belongs to the function's `default worker`
 // function can declare name workers which run concurrently function's default worker and other named workers
 public function main() {
@@ -104,4 +140,7 @@ public function main() {
     wait B;
 
     io:println(string`In Function Worker, Counter[${counter}]`);
+
+    // inter-worker messaging demo
+    io:println("Value received from worker-messaging ", messaging());
 }
