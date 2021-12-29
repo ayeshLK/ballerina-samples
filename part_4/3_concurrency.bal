@@ -45,3 +45,24 @@ type Row record {
 Row r1 = {
     k: s, value: 17
 };
+
+//---------- `readonly` & `isolation` ----------//
+type Entry map<json>;
+type ReadOnlyMap readonly & Entry;
+
+function loadMap() returns ReadOnlyMap {
+    return {};
+}
+
+// reference to `roMap` can not be changed (declared `final`)
+// `ReadOnlyMap` type is itself `readonly` (ballerina `readonly` is deep)
+// hence `roMap` is immutable
+final ReadOnlyMap roMap = loadMap();
+
+isolated function lookUp(string 'key) returns readonly & Entry? {
+    // since `roMap` is immutable, it is completely safe to access inside a `isolated` function
+    // `isolated` functions complements `readonly` data
+    if roMap.hasKey('key) {
+        return roMap.get('key);
+    }
+}
