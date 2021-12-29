@@ -35,9 +35,6 @@ function simpleWorkers() {
     wait B;
 
     io:println(string`In Function Worker, Counter[${counter}]`);
-
-    // inter-worker messaging demo
-    io:println("Value received from worker-messaging ", messaging());
 }
 
 function workerReturnValue(string s) returns int|error {
