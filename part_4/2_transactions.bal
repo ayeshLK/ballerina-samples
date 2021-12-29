@@ -114,5 +114,5 @@ transactional function updateInfo() returns error? {
 function updateDb() returns error? {}
 
 isolated function commitHandler(transaction:Info info) {
-    io:println("Receid commit info ", info);
+    io:println("Received commit info ", info);
 }
