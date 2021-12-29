@@ -8,12 +8,36 @@ on:
       - '*.md'
       
 jobs:
-  build:
-    name: Build on Ubuntu
+  ballerina-samples:
+    name: Build Ballerina Samples for Tutorial
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        directory: ["part_1", "part_2", "part_3", "part_4", "ballerina_introduction", "ballerina_collections", "ballerina-behavioural-types"]
+        directory:
+          - "ballerina-tutorial/part_1"
+          - "ballerina-tutorial/part_2"
+          - "ballerina-tutorial/part_3"
+          - "ballerina-tutorial/part_4"
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Ballerina Build
+        uses: ballerina-platform/ballerina-action@master
+        env:
+          WORKING_DIR: ${{ matrix.directory }}
+        with:
+          args:
+            build
+
+  ballerina-blogs:
+    name: Build Ballerina Samples for Blogs
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        directory:
+          - "blogs/ballerina_introduction"
+          - "blogs/ballerina_collections"
+          - "blogs/ballerina-behavioural-types"
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
