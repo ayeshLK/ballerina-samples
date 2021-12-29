@@ -87,3 +87,27 @@ isolated function pop() returns int {
         return stack.pop();
     }
 }
+
+// object methods can be `isolated`
+// isolated method is same as an isolated fucntion where `self` is treated as a parameter
+// an isolated method call is concurrency safe if both the object is safe and arguments are safe
+
+isolated class Counter {
+    // mutable fields of an isolated object
+    // - should be `private` and only be accessed using `self`
+    // - must be initialized with an isolated expresion and must obly be accessed within a `lock` statemet
+    // - field is mutable unless it is final and has type that is subtype of `readonly`
+    private int n = 0;
+
+    isolated function get() returns int {
+        lock {
+            return self.n;
+        }
+    }
+
+    isolated function inc() {
+        lock {
+            self.n += 1;
+        }
+    }
+}
