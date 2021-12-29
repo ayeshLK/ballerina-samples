@@ -2,7 +2,7 @@ int n = 0;
 
 function icrement() {
     // `lock` statement allows mutable state to be safely accessed from multiple strands
-    // execution of outermost blocks is not inteleaved
+    // execution of outermost blocks is not interleaved
     lock {
         n += 1;
     }
