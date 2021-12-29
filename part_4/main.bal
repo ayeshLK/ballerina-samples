@@ -116,6 +116,22 @@ function messagingFailure(string s) returns int|error {
     return resolvedValue;
 }
 
+// ballerina supports transactions in language level
+// it is not a transaction memory
+// ballerina runtime has a transaction manager
+// current transaction is part of the execution context of a strand
+// transaction must explicitly commit, by using `commit`
+// `commit` may return and error, this error should be handled properly
+function simpleTransaction(string s) returns error? {
+    transaction {
+        int value = check int:fromString(s);
+        if value == 0 {
+            io:println("Received zero value");
+        }
+        check commit;
+    }
+}
+
 // normally all of function's code belongs to the function's `default worker`
 // function can declare name workers which run concurrently function's default worker and other named workers
 public function main() {
