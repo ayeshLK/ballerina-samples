@@ -66,3 +66,24 @@ isolated function lookUp(string 'key) returns readonly & Entry? {
         return roMap.get('key);
     }
 }
+
+// when a variable is declared `isolated` compiler guarantees that it is an isolated root 
+// and accessed only within a lock statement
+// isolated variables should be declared module-level (not public)
+isolated int[] stack = [];
+
+isolated function push(int n) {
+    // `lock` statement that accesses an isolated variable must maintain isolated root invariant
+    // - access only one isolated variable
+    // - call only isolated functions
+    // - transfers of values in and out must use isolated expressions
+    lock {
+        stack.push(n);
+    }
+}
+
+isolated function pop() returns int {
+    lock {
+        return stack.pop();
+    }
+}
