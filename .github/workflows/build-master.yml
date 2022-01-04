@@ -38,6 +38,7 @@ jobs:
           - "blogs/ballerina_introduction"
           - "blogs/ballerina_collections"
           - "blogs/ballerina-behavioural-types"
+          - "blogs/control_structures"
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
