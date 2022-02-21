@@ -6,7 +6,7 @@ import ballerina/io;
 // ----------------------------------------------------------- //
 
 // declaring a simple udp-service with service-object pattern
-var simleUdpService = service object {
+udp:Service simleUdpService = service object {
     remote function onDatagram(udp:Datagram dg) {
         io:println("Bytes received: ", dg.data.length());
     }
@@ -23,7 +23,7 @@ var simleUdpService = service object {
 // resource method has two parts 
 // 1. accessor -> eg: get
 // 2. resource name -> eg: hello
-var simpleHttpService = service object {
+http:Service simpleHttpService = service object {
     // here param `name` is a query param
     // http://localhost:8080/hello?name=ayesh
     resource function get hello (string name) returns string {
@@ -38,7 +38,7 @@ var simpleHttpService = service object {
 
     // http://localhost:8080/
     resource function get . (http:Caller caller, http:Request request) {
-        var response = caller->respond("Hello World..!");
+        error? response = caller->respond("Hello World..!");
         if (response is error) {
             io:println("Error occurred while responding to the request ", response.message());
         }
