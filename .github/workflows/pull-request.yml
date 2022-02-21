@@ -35,6 +35,7 @@ jobs:
           - "blogs/ballerina-behavioural-types"
           - "blogs/control_structures"
           - "blogs/basic_algorithms"
+          - "blogs/calculator"
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
