@@ -1,28 +1,19 @@
-import ballerina/io;
+string[] books = ["Harry Potter", "Angels & Demons"];
+string bookOne = books[0];
 
-public function main() {
-    string[] books = ["Harry Potter", "Angels & Demons"];
-    string bookOne = books[0];
-    
-    // appends the value to the end of the array
-    books.push("The Hunger Games: Mockingjay");
+int[] values1 = [1, 2, 3, 4, 5];
+int[] values2 = [2, 4, 1, 5, 3];
 
-    // updates the value in the 0th index of the array
-    books[0] = "Harry Potter and the Philosopher's Stone";
+// `isEqual` will be `false`
+boolean isEqual = values1 == values2;
 
-    int[] values1 = [1, 2, 3, 4, 5];
-    int[] values2 = [2, 4, 1, 5, 3];
+// reverse the order of the members of the array
+string[] reverse = books.reverse();
 
-    // `isEqual` will be `false`
-    boolean isEqual = values1 == values2;
+int[] values = [80, 85, 90];
+// combines the array values to one value
+int total = values.reduce(function(int a, int b) returns int => a + b, 0);
 
-    // iterate over books array
-    foreach string book in books {
-        io:println(book);
-    }
-
-    // iterate over array elements along with respective indexes
-    foreach [int, string] [idx, book] in books.enumerate() {
-        io:println(string `Index [${idx}] Book [${book}]`);
-    }
-}
+int[] marks = [90, 50, 65, 80];
+// filters the marks which are higher than `75`
+int[] higherMarks = marks.filter(a => a >= 75);
